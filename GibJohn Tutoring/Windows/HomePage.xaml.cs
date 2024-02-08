@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,12 @@ namespace GibJohn_Tutoring.Windows
     {
         Dictionary<string, string> answers;
         List<string> questions;
+
+        private int timer;
+        private int qNumber;
+        private string question;
+        private bool quizInProgress;
+        private int score;
         public HomePage()
         {
             InitializeComponent();
@@ -75,17 +82,48 @@ namespace GibJohn_Tutoring.Windows
         }
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            if (questions.Count != 0)
+            if (!quizInProgress)
             {
-                questionPanel.Children.Clear();
-                foreach (string question in questions)
-                {
-                    Label lbl = new Label();
-                    lbl.Content = question;
-                    questionPanel.Children.Add(lbl);
-                }
+                score = 0;
+                quizInProgress = true;
+                questionLoop();
             }
+        }
+        private async Task questionLoop()
+        {   
+            qNumber = 0;
+            while (true)
+            {
+                await Task.Delay(100);
+                Trace.WriteLine("1");
+                if (timer == 0)
+                {
+                    timer = 100;
+                    question = questions[qNumber];
+                    qNumber++;
+                }
+                else
+                {
+                    timer-=2;
+                    timerBar.Value = timer;
+                }
+                update();
+            }
+        }
+        private void update()
+        {
+            lblTimer.Content = timer.ToString() + "s";
+            lblQuestion.Content = question;
+            lblScore.Content = $"Score: {score}";
+        }
 
+        private void btnAnswer_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtAnswer.Text == answers[question])
+            {
+                score += timer;
+                timer = 0;
+            }
         }
     }
 }

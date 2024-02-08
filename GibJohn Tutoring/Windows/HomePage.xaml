@@ -16,10 +16,15 @@
             <ComboBox Name="subjectCmb" Margin="5" Width="100"/>
             <Button Name="btnGetQuestions" Content="Get Questions" Margin="5" Width="100" Click="btnGetQuestions_Click"/>
             <Button Name="btnStart" Content="Start Quiz" Margin="5" Width="100" Click="btnStart_Click"/>
+            <Label Name="lblScore" Content="Score: "/>
 
         </StackPanel>
         <StackPanel Name="questionPanel" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            
+            <Label Name="lblTimer" Content=""/>
+            <ProgressBar Name="timerBar" Height="10" Minimum="0" Maximum="100"/>
+            <Label Name="lblQuestion" Content="Question"/>
+            <TextBox Name="txtAnswer" Width="100"/>
+            <Button Name="btnAnswer" Content="SubmitAnswer" Width="100" Click="btnAnswer_Click"/>
         </StackPanel>
     </Grid>
 </Window>
