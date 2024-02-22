@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
 
 namespace GibJohn_Tutoring.Windows
 {
@@ -52,7 +53,7 @@ namespace GibJohn_Tutoring.Windows
             }
         }
 
-        private void btnGetQuestions_Click(object sender, RoutedEventArgs e)
+        private void getQuestions()
         {
             if (subjectCmb.Text != "")
             {
@@ -80,8 +81,22 @@ namespace GibJohn_Tutoring.Windows
             }
 
         }
+        private void shuffleQuestions()
+        {
+            Random rnd = new Random();
+            List<string> questionsBuffer = new List<string>();
+            while (questions.Count != 0)
+            {
+                int index = rnd.Next(0, questions.Count);
+                questionsBuffer.Add(questions[index]);
+                questions.RemoveAt(index);
+            }
+            questions = questionsBuffer;
+        }
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
+            getQuestions();
+            shuffleQuestions();
             if (!quizInProgress)
             {
                 score = 0;
@@ -92,15 +107,15 @@ namespace GibJohn_Tutoring.Windows
         private async Task questionLoop()
         {   
             qNumber = 0;
-            while (true)
+            while (qNumber != questions.Count)
             {
-                await Task.Delay(100);
-                Trace.WriteLine("1");
+                await Task.Delay(100);            
                 if (timer == 0)
                 {
                     timer = 100;
                     question = questions[qNumber];
                     qNumber++;
+                    Trace.WriteLine($"Q:{qNumber}");
                 }
                 else
                 {
@@ -109,6 +124,7 @@ namespace GibJohn_Tutoring.Windows
                 }
                 update();
             }
+            Trace.WriteLine("Quiz Completed");
         }
         private void update()
         {
@@ -121,8 +137,13 @@ namespace GibJohn_Tutoring.Windows
         {
             if (txtAnswer.Text == answers[question])
             {
+                Trace.WriteLine("Correct answer");
                 score += timer;
                 timer = 0;
+            }
+            else
+            {
+                Trace.WriteLine("Incorrect answer");
             }
         }
     }

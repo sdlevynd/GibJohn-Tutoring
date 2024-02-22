@@ -14,7 +14,6 @@
         <StackPanel Name="selectionPanel" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Label Name="lblTitle" Content="Options" FontSize="25" Margin="5"/>
             <ComboBox Name="subjectCmb" Margin="5" Width="100"/>
-            <Button Name="btnGetQuestions" Content="Get Questions" Margin="5" Width="100" Click="btnGetQuestions_Click"/>
             <Button Name="btnStart" Content="Start Quiz" Margin="5" Width="100" Click="btnStart_Click"/>
             <Label Name="lblScore" Content="Score: "/>
 
